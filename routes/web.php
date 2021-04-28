@@ -15,14 +15,14 @@ use Inertia\Inertia;
 |
 */
 
-Route::get('/', function () {
-    return Inertia::render('Welcome', [
-        'canLogin' => Route::has('login'),
-        'canRegister' => Route::has('register'),
-        'laravelVersion' => Application::VERSION,
-        'phpVersion' => PHP_VERSION,
-    ]);
-});
+// Route::get('/', function () {
+//     return Inertia::render('Welcome', [
+//         'canLogin' => Route::has('login'),
+//         'canRegister' => Route::has('register'),
+//         'laravelVersion' => Application::VERSION,
+//         'phpVersion' => PHP_VERSION,
+//     ]);
+// });
 
 Route::middleware(['auth:sanctum', 'verified'])->get('/dashboard', function () {
     return Inertia::render('Dashboard');
@@ -32,3 +32,7 @@ Route::resource('dashboard/products','App\Http\Controllers\ProductController');
 Route::resource('dashboard/categories','App\Http\Controllers\CategoryController');
 Route::resource('dashboard/orders','App\Http\Controllers\OrderController');
 Route::resource('dashboard/coupons','App\Http\Controllers\CouponController');
+Route::get('/','App\Http\Controllers\HomeController@index')->name("home");
+Route::get('/detail/{id}','App\Http\Controllers\HomeController@show')->name("show");
+Route::get('/cart','App\Http\Controllers\HomeController@cart')->name("cart");
+Route::get('/coupon/{code}','App\Http\Controllers\HomeController@getCoupon');
