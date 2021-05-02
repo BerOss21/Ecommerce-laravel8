@@ -42,16 +42,6 @@
 
                 <div id="summary" class="w-1/4 px-8 py-10">
                     <h1 class="font-semibold text-2xl border-b pb-8">Order Summary</h1>
-                    <!-- <div class="flex justify-between mt-10 mb-5">
-                        <span class="font-semibold text-sm uppercase">Items 3</span>
-                        <span class="font-semibold text-sm">590$</span>
-                    </div> -->
-                    <!-- <div>
-                        <label class="font-medium inline-block mb-3 text-sm uppercase">Shipping</label>
-                        <select class="block p-2 text-gray-600 w-full text-sm">
-                            <option>Standard shipping in Morocco - 50.00 DHS</option>
-                        </select>
-                    </div> -->
                     <div class="py-10">
                         <form action="" @submit.prevent="getCoupon" v-if="!coupon">
                             <label for="promo" class="font-semibold inline-block mb-3 text-sm uppercase">Promo Code</label>
@@ -72,8 +62,7 @@
                             <span>Total cost</span>
                             <span>{{totalCost}} DHS</span>
                         </div>
-                        <button
-                            class="bg-indigo-500 font-semibold hover:bg-indigo-600 py-3 text-sm text-white uppercase w-full">Checkout</button>
+                        <inertia-link :href="route('checkout')" class="bg-indigo-500 block text-center font-semibold py-2 px-4 rounded w-full hover:bg-indigo-600 py-3 text-sm text-white uppercase">Checkout</inertia-link>
                     </div>
                 </div>
             </div>
@@ -88,7 +77,7 @@
 </template>
 
 <script>
-    import {mapState} from "vuex";
+    import {mapMutations, mapState} from "vuex";
     import AppLayout from '../Layouts/AppLayout.vue';
     import JetModal from '@/Jetstream/Modal';
     import axios from "axios";
@@ -110,16 +99,20 @@
         },
         computed:{
             ...mapState(["cart"]),
+
             total(){
                 return this.qty.length?this.qty.map((item,key)=>item*this.cartItems[key].price):0
             },
             totalCost(){
                 let subtotal= this.total.length?this.total.reduce( (accumulator, currentValue) => accumulator + currentValue):0;
                 let remise=this.coupon?(subtotal*this.coupon)/100:0;
+                localStorage.setItem("totalCost",subtotal-remise);
+                this.updateCart();
                 return subtotal-remise;
             }
         },
         methods:{
+            ...mapMutations(["updateCart"]),
             getCoupon(){
                 if(this.code.length){
                      axios.get(`/coupon/${this.code}`).then(res=>{
@@ -142,6 +135,10 @@
             qtyChanged(e,index){
                 if(e.target.value<=this.cartItems[index].quantity){
                     this.qty[index]=e.target.value;
+                    this.cartItems[index].qty=e.target.value;
+                    this.cartItems[index].total=this.cartItems[index].price*e.target.value;
+                    localStorage.setItem("cart",JSON.stringify(this.cartItems));
+                    this.updateCart();
                 }
                 else{
                     this.qty[index]=this.qty[index];

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Http\Requests\OrderRequest;
 use Inertia\Inertia;
 use App\Models\Order;
 
@@ -39,7 +40,28 @@ class OrderController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $data=[
+            "user_id"=>auth()->id(),
+            "amount"=>$request->amount,
+            "detail"=>serialize($request->detail)
+        ];
+
+        if($request->adresse){
+            $data["adresse"]=$request->adresse;
+        }
+        if($request->phone){
+            $data["phone"]=$request->phone;
+        }
+
+        $order=Order::create($data);
+
+        $request->session()->flash('flash.banner', 'Order sent successfully');
+
+        return Inertia::render("Success");
+
+
+
+
     }
 
     /**

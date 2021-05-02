@@ -10,6 +10,7 @@
     "watch-poll": "mix watch -- --watch-options-poll=1000"
   },
   "dependencies": {
+    "@stripe/stripe-js": "^1.14.0",
     "vuetify": "^2.4.0",
     "vuex": "^4.0.0"
   },

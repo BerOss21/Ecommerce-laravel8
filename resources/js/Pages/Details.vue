@@ -23,7 +23,7 @@
                     {{product.name}}
                 </div>
                 <div class="border-b p-4 text-2xl">
-                    {{product.price}} DHS
+                    {{getPrice(product.price)}}
                 </div>
                 <div class="border-b p-4 text-xl text-green-300">
                     {{product.quantity}} Unities
@@ -76,6 +76,10 @@
             selectImg(img) {
                 this.selectedImage = img
             },
+            getPrice(i){
+                let val=+i;
+                return val.toLocaleString('fr-FR',{style:'currency',currency:'DHS'});
+            },
             addToCart() {
                 if (this.qty <= 0) {
                     this.msg = "The quantity should be a positive integer";
@@ -89,19 +93,30 @@
                 
                 else {
                     let cartItems = [...this.cart];
-                    if(cartItems.some(item=>item.id==this.product.id)){
-                        cartItems.forEach(item=>{
-                            if(item.id=this.product.id){
-                                if((+item.qty) + (+this.qty) > +this.product.quantity){
-                                    this.msg = "Sorry there is only "+this.product.quantity+" unities in stock";
-                                    this.showMessage = true;
-                                }
-                                else{
-                                    item.qty+=+this.qty,
-                                    item.total=item.qty*this.product.price
-                                }          
-                            }
-                        })
+                    // if(cartItems.some(item=>item.id==this.product.id)){
+                    //     cartItems.forEach(item=>{
+                    //         if(item.id=this.product.id){
+                    //             if((+item.qty) + (+this.qty) > +this.product.quantity){
+                    //                 this.msg = "Sorry there is only "+this.product.quantity+" unities in stock";
+                    //                 this.showMessage = true;
+                    //             }
+                    //             else{
+                    //                 item.qty+=+this.qty,
+                    //                 item.total=item.qty*this.product.price
+                    //             }          
+                    //         }
+                    //     })
+                    // }
+                    let productIndex=cartItems.findIndex(item=>item.id==this.product.id);
+                    if(productIndex!=-1){               
+                        if((+cartItems[productIndex].qty) + (+this.qty) > +this.product.quantity){
+                            this.msg = "Sorry there is only "+this.product.quantity+" unities in stock";
+                            this.showMessage = true;
+                        }
+                        else{
+                            cartItems[productIndex].qty+=+this.qty,
+                            cartItems[productIndex].total=item.qty*this.product.price
+                        }                         
                     }
                     else{
                         cartItems.push({
@@ -115,6 +130,8 @@
                             total: this.qty * this.product.price
                         })
                     }    
+                    let totalCost=cartItems.reduce((acc,curr)=>acc+curr);
+                    localStorage.setItem("totalCost",totalCost);
                     localStorage.setItem("cart", JSON.stringify(cartItems));
                     this.updateCart();
                 }
@@ -126,7 +143,6 @@
             this.selectedImage = this.product.image_path
         }
     }
-
 </script>
 
 <style lang="css" scoped>
