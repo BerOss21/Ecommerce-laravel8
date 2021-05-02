@@ -3,7 +3,7 @@ import { createStore } from "vuex";
 export default createStore({
   state: {
      cart:localStorage.cart?JSON.parse(localStorage.cart):[],
-     totalCost:localStorage.totalCost?JSON.parse(localStorage.totalCost):0,
+     totalCost:localStorage.totalCost?localStorage.totalCost:0,
   },
   getters: {
      
@@ -11,7 +11,7 @@ export default createStore({
   mutations: {
     updateCart(state){
       state.cart=localStorage.cart?JSON.parse(localStorage.cart):[],
-      state.totalCost=localStorage.totalCost;
+      state.totalCost=localStorage.totalCost?localStorage.totalCost:0;
     },
 
     clearCart(state){

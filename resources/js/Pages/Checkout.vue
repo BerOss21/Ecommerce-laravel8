@@ -51,7 +51,6 @@
             <div v-else>
                 <div class="rounded text-center  bg-yellow-500 py-3 px-4">Your cart is empty</div>
             </div>
-     
         </div>
     </app-layout>
 </template>
@@ -127,7 +126,7 @@
                         phone:this.phone,
                         detail:this.cart.map(item=>{
                             return (
-                                {'name':item.name,'qty':item.qty,'total':item.total}
+                                {'name':item.name,'qty':item.qty,'total':item.total,'coupon':localStorage.coupon}
                             )
                         })
                     }

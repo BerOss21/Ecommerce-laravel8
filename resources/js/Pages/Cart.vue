@@ -107,6 +107,7 @@
                 let subtotal= this.total.length?this.total.reduce( (accumulator, currentValue) => accumulator + currentValue):0;
                 let remise=this.coupon?(subtotal*this.coupon)/100:0;
                 localStorage.setItem("totalCost",subtotal-remise);
+                localStorage.setItem("coupon",this.coupon);
                 this.updateCart();
                 return subtotal-remise;
             }
@@ -150,6 +151,7 @@
         mounted(){
             this.cartItems=this.cart;
             this.qty=this.cart.map(item=>item.qty);
+            localStorage.setItem("coupon","0")
         }
     }
 

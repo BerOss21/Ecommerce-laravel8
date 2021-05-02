@@ -46,7 +46,13 @@
                 <span>{{msg}}</span>       
                 <button class="py-2 px-4 shadow-md rounded ml-auto absolute right-0" @click="showMessage=false">X</button>             
             </div>
-        </jet-modal>
+        </jet-modal> 
+        <jet-modal :show="showSuccess">
+            <div class="container py-3 mx-auto text-center w-full h-full relative bg-green-200">
+                <span>{{msg}}</span>       
+                <button class="py-2 px-4 shadow-md rounded ml-auto absolute right-0" @click="showSuccess=false">X</button>             
+            </div>
+        </jet-modal>    
     </app-layout>
 </template>
 
@@ -63,6 +69,7 @@
             return {
                 selectedImage: "",
                 showMessage: false,
+                showSuccess: false,
                 msg: "",
                 qty:1
             }
@@ -93,20 +100,6 @@
                 
                 else {
                     let cartItems = [...this.cart];
-                    // if(cartItems.some(item=>item.id==this.product.id)){
-                    //     cartItems.forEach(item=>{
-                    //         if(item.id=this.product.id){
-                    //             if((+item.qty) + (+this.qty) > +this.product.quantity){
-                    //                 this.msg = "Sorry there is only "+this.product.quantity+" unities in stock";
-                    //                 this.showMessage = true;
-                    //             }
-                    //             else{
-                    //                 item.qty+=+this.qty,
-                    //                 item.total=item.qty*this.product.price
-                    //             }          
-                    //         }
-                    //     })
-                    // }
                     let productIndex=cartItems.findIndex(item=>item.id==this.product.id);
                     if(productIndex!=-1){               
                         if((+cartItems[productIndex].qty) + (+this.qty) > +this.product.quantity){
@@ -114,8 +107,8 @@
                             this.showMessage = true;
                         }
                         else{
-                            cartItems[productIndex].qty+=+this.qty,
-                            cartItems[productIndex].total=item.qty*this.product.price
+                            cartItems[productIndex].qty+=+this.qty;
+                            cartItems[productIndex].total=this.qty*this.product.price
                         }                         
                     }
                     else{
@@ -134,6 +127,8 @@
                     localStorage.setItem("totalCost",totalCost);
                     localStorage.setItem("cart", JSON.stringify(cartItems));
                     this.updateCart();
+                    this.msg = "Product added successfully"; 
+                    this.showSuccess = true;              
                 }
             },
             ...mapMutations(["updateCart"])
