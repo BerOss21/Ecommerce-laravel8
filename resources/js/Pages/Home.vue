@@ -1,7 +1,7 @@
 <template>
     <app-layout>
         <Carousel />
-        <Body :products="products"/>
+        <Body :products="productsPag.data" :links="productsPag.links" :categories="categories"/>
     </app-layout>
 
 </template>
@@ -18,7 +18,10 @@
             Body
         },
         name: "Home",
-        props:["products"]
+        props:["productsPag","categories"],
+        mounted(){
+            console.log("pag",this.productsPag)
+        }
     }
 
 </script>

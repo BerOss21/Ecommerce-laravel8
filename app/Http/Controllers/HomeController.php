@@ -5,13 +5,16 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 use App\Models\Product;
+use App\Models\Category;
 use App\Models\Coupon;
 
 class HomeController extends Controller
 {
     public function index(){
         return Inertia::render("Home",[
-            "products"=>Product::with("user","categories")->latest()->get()
+            "productsPag"=>Product::with("user","categories")->latest()->paginate(8),
+            "categories"=>Category::latest()->get(),
+            // "tests"=>Product::with("user","categories")->latest()->paginate(4)
         ]);
     }
 
