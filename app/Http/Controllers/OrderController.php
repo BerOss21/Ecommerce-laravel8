@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Http\Requests\OrderRequest;
 use Inertia\Inertia;
+use App\Models\Product;
 use App\Models\Order;
 
 class OrderController extends Controller
@@ -14,10 +15,23 @@ class OrderController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+
+    public function __construct(){  
+        $this->middleware('isAdmin')->only("index");
+    }
+
     public function index()
     {
         $orders=Order::with("user")->latest()->get();
         return Inertia::render('Dashboard/Orders/Index',[
+            "orders"=>$orders
+        ]);
+    }
+
+    public function myOrders()
+    {
+        $orders=Order::with("user")->whereUserId(auth()->id())->latest()->get();
+        return Inertia::render('MyOrders',[
             "orders"=>$orders
         ]);
     }
@@ -51,6 +65,15 @@ class OrderController extends Controller
         }
         if($request->phone){
             $data["phone"]=$request->phone;
+        }
+
+        // dd($request->detail);
+
+        foreach($request->detail as $item){
+            $product=Product::find($item['id']);
+            $product->update([
+                "quantity"=>$product->quantity - $item['qty']
+            ]);
         }
 
         $order=Order::create($data);

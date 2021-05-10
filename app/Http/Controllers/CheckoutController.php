@@ -18,8 +18,8 @@ class CheckoutController extends Controller
         Stripe::setApiKey('sk_test_BtSqxeVyQZEaTRyrdsMCTUmQ00mbIkYw4W');
 
         $intent = PaymentIntent::create([
-            'amount' => $request->price,
-            'currency' => 'eur',
+            'amount' => $request->price * 100,
+            'currency' => 'mad',
         ]);
 
         $clientSecret=Arr::get($intent,'client_secret');

@@ -16,7 +16,7 @@ use Inertia\Inertia;
 */
 
 // Route::get('/', function () {
-//     return Inertia::render('Welcome', [
+//     return Inertia::render('Home', [
 //         'canLogin' => Route::has('login'),
 //         'canRegister' => Route::has('register'),
 //         'laravelVersion' => Application::VERSION,
@@ -24,7 +24,7 @@ use Inertia\Inertia;
 //     ]);
 // });
 
-Route::middleware(['auth:sanctum', 'verified'])->get('/dashboard', function () {
+Route::middleware(['auth:sanctum','verified','isAdmin'])->get('/dashboard', function () {
     return Inertia::render('Dashboard');
 })->name('dashboard');
 
@@ -32,7 +32,8 @@ Route::resource('dashboard/products','App\Http\Controllers\ProductController');
 Route::resource('dashboard/categories','App\Http\Controllers\CategoryController');
 Route::resource('dashboard/orders','App\Http\Controllers\OrderController');
 Route::resource('dashboard/coupons','App\Http\Controllers\CouponController');
-Route::resource('orders','App\Http\Controllers\OrderController');
+Route::resource('dashboard/orders','App\Http\Controllers\OrderController');
+Route::get('/orders','App\Http\Controllers\OrderController@myOrders')->name("myOrders");
 Route::get('/','App\Http\Controllers\HomeController@index')->name("home");
 Route::get('/detail/{id}','App\Http\Controllers\HomeController@show')->name("show");
 Route::get('/cart','App\Http\Controllers\HomeController@cart')->name("cart");

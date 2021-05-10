@@ -1,44 +1,50 @@
 <template>
      <app-layout>
-        <template #header>
+        <!-- <template #header>
             <h2 class="font-semibold text-xl text-gray-800 leading-tight">
                 Dashboard
             </h2>
-        </template>
+        </template> -->
         <dash-layout>
             <div class="px-4 py-2">
-                <div class="flex justify-between mb-3">
-                    <h1 class="font-bold">Orders</h1>
+                <div class="my-5">
+                    <div class="px-4 py-2 sm:p-3 bg-gray-200 shadow sm:rounded-lg">
+                        <div class="flex justify-between w-full">
+                            <h1 class="font-bold">Orders</h1>
+                        </div>
+                    </div>
                 </div>
-                <table class="border-collapse border rounded shadow-md w-full">
-                    <thead class="bg-gray-300">
-                        <tr>
-                            <th class="border">Customer</th>
-                            <th class="border">Amount</th>
-                            <th class="border">Date</th>
-                            <th class="border">Detail</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <template v-if="orders.length">
-                        <tr v-for="order in orders" :key="order.id">
-                            <td class="border p-1">{{order.user.name}}</td>
-                            <td class="border p-1">{{getPrice(order.amount)}}</td>
-                            <td class="border p-1">{{getDate(order.created_at)}}</td>
-                            <td class="border p-1">
-                                <div class="flex justify-center">
-                                    <a href="" @click.prevent="showModel(order.id)" 
-                                        class="py-1 px-2 rounded shadow-md bg-indigo-500 hover:bg-indigo-300">Show
-                                    </a>
-                                </div>
-                            </td>
-                        </tr>
-                        </template>
-                        <tr v-else>
-                            <td colspan="4" class="text-center">No orders</td>
-                        </tr>
-                    </tbody>
-                </table>
+                <div class="px-4 py-5 sm:p-6 bg-white shadow sm:rounded-lg">
+                    <table class="cell-border compact stripe" id="myTable">
+                        <thead class="bg-gray-300">
+                            <tr>
+                                <th class="border">Customer</th>
+                                <th class="border">Amount</th>
+                                <th class="border">Date</th>
+                                <th class="border">Detail</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <template v-if="orders.length">
+                            <tr v-for="order in orders" :key="order.id">
+                                <td class="border p-1">{{order.user.name}}</td>
+                                <td class="border p-1">{{getPrice(order.amount)}}</td>
+                                <td class="border p-1">{{getDate(order.created_at)}}</td>
+                                <td class="border p-1">
+                                    <div class="flex justify-center">
+                                        <a href="" @click.prevent="showModel(order.id)" 
+                                            class="py-1 px-2 text-white rounded shadow-md bg-indigo-500 hover:bg-indigo-300">Show
+                                        </a>
+                                    </div>
+                                </td>
+                            </tr>
+                            </template>
+                            <tr v-else>
+                                <td colspan="4" class="text-center">No orders</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
             </div>
             <jet-modal :show="show">
                     <template #title>
@@ -79,6 +85,8 @@
     import DashLayout from '@/Layouts/DashLayout'
     import JetModal from '@/Jetstream/DialogModal'
     import JetButton from '@/Jetstream/Button'
+    import $ from "jquery"
+
     export default {
         components: {
             AppLayout,
@@ -109,6 +117,9 @@
                 let time=newDate.toLocaleTimeString('fr-FR');
                 return date+" "+time;
             }
+        },
+        mounted(){
+            $("#script").html($("#script").children());
         }
     }
 </script>

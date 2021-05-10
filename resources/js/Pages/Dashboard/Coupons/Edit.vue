@@ -1,17 +1,25 @@
 <template>
     <app-layout>
-        <template #header>
+        <!-- <template #header>
             <h2 class="font-semibold text-xl text-gray-800 leading-tight">
                 Dashboard
             </h2>
-        </template>
+        </template> -->
         <dash-layout>
             <div class="px-4 py-2">
-                <div class="flex justify-between mb-3">
-                    <h1 class="font-bold">New coupon</h1>
-                    <inertia-link :href="route('coupons.index')" class="py-1 px-2 shadow-md bg-blue-600 rounded">Return</inertia-link>
+                <div class="my-5">
+                    <div class="px-4 py-2 sm:p-3 bg-gray-200 shadow sm:rounded-lg">
+                        <div class="flex justify-between w-full">
+                            <h1 class="font-bold">Edit coupon</h1>
+                            <inertia-link :href="route('coupons.index')">
+                                <jet-button :bg="'bg-indigo-500'">
+                                    Return 
+                                </jet-button>
+                            </inertia-link>
+                        </div>
+                    </div>
                 </div>
-               <div>
+               <div class="px-4 py-5 sm:p-6 bg-white  shadow sm:rounded-lg">
                    <form @submit.prevent="submit">
                        <div class="mb-2">
                            <input type="text" v-model="form.code" class="rounded w-full shadow-md py-2 bg-gray-100" placeholder="Code of coupon">
@@ -36,11 +44,13 @@
 <script>
     import AppLayout from '@/Layouts/AppLayout'
     import DashLayout from '@/Layouts/DashLayout'
+    import JetButton from "@/Jetstream/Button"
 
     export default {
         components: {
             AppLayout,
-            DashLayout
+            DashLayout,
+            JetButton
         },
         data(){
             return{

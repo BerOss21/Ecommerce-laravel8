@@ -13,12 +13,30 @@
 
         <!-- Styles -->
         <link rel="stylesheet" href="{{ mix('css/app.css') }}">
+        <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.24/css/jquery.dataTables.css">
 
+        <style>
+            #myTable_length,#myTable_filter{
+                margin-bottom:20px
+            },
+        </style>
 
         <!-- Scripts -->
         @routes
         <script src="{{ mix('js/app.js') }}" defer></script>
+        <script src="{{ asset('js/jquery/jquery-3.6.0.min.js') }}"></script>
         <script src="https://js.stripe.com/v3/" defer></script>
+        <div id="script">
+            <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.24/js/jquery.dataTables.js"></script>
+            <script>
+                $(document).ready(function () {
+                    $('#myTable').DataTable({
+                        responsive: true,
+                        scrollY: 400,
+                    })
+                });
+            </script>
+        </div>
     </head>
     <body class="font-sans antialiased">
         @inertia

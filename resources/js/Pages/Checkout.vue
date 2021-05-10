@@ -119,14 +119,14 @@
                     this.processing=false;
                     this.succeeded=true;
                     this.$inertia.post(
-                    '/orders',
+                    'dashboard/orders',
                     {
                         amount:this.totalCost,
                         adresse:this.adresse,
                         phone:this.phone,
                         detail:this.cart.map(item=>{
                             return (
-                                {'name':item.name,'qty':item.qty,'total':item.total,'coupon':localStorage.coupon}
+                                {'id':item.id,'name':item.name,'qty':item.qty,'total':item.total,'coupon':localStorage.coupon}
                             )
                         })
                     }

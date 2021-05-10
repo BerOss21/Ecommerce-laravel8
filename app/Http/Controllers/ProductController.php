@@ -19,9 +19,11 @@ class ProductController extends Controller
      * @return \Illuminate\Http\Response
      */
 
-    public function __construct(){   
+    public function __construct(){  
+        $this->middleware('isAdmin');
         $this->middleware('checkCategory')->only('create','edit');
     }
+    
     public function index()
     {
         $products=Product::with("categories","user","galleries")->latest()->get();
@@ -118,6 +120,8 @@ class ProductController extends Controller
      */
     public function update(UpdateProductRequest $request, $id)
     {
+        // dd($request->currentGallery);
+
         $product=Product::whereId($id)->with("galleries")->first();
 
         $data=[
@@ -139,7 +143,7 @@ class ProductController extends Controller
        
         $product->categories()->sync($request->categories);
 
-        if($request->galleries){
+        if($request->currentGallery){
             $gallery=[];
             foreach($product->galleries as $img){
                 Storage::disk('local')->delete('public/images/galleries/'.$img->image);
@@ -150,7 +154,7 @@ class ProductController extends Controller
                 \Image::make($img)->resize(300,400)->save(public_path('storage/images/galleries/'.$file_name));
                 $gallery[$key]["image"]=$file_name;
             }
-
+     
             $product->galleries()->delete();
             $product->galleries()->createMany($gallery);
         }

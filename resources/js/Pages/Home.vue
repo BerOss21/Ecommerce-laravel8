@@ -1,6 +1,6 @@
 <template>
     <app-layout>
-        <Carousel />
+        <Header />
         <Body :products="productsPag.data" :links="productsPag.links" :categories="categories"/>
     </app-layout>
 
@@ -8,13 +8,13 @@
 <script>
 
     import AppLayout from '@/Layouts/AppLayout'
-    import Carousel from "./Home/Carousel";
+    import Header from "./Home/Header";
     import Body from "./Home/Body";
 
     export default {
         components: {
             AppLayout,
-            Carousel,
+            Header,
             Body
         },
         name: "Home",

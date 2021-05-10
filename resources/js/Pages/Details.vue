@@ -1,7 +1,7 @@
 <template>
     <app-layout>
-        <div class="grid grid-cols-12 gap-12 container mx-auto my-10 w-10/12">
-            <div class="col-span-5 bg-white" style="max-height:90vh">
+        <div class="grid md:grid-cols-12 gap-12 container mx-auto my-10 w-10/12">
+            <div class="md:col-span-5 bg-white" style="max-height:90vh">
                 <div class="border-2" style="height:70vh">
                     <img :src="selectedImage" alt="image" class="h-full w-full">
                 </div>
@@ -18,20 +18,20 @@
                     </div>
                 </div>
             </div>
-            <div class="col-span-7 px-10 py-6 bg-white">
+            <div class="md:col-span-7 px-10 py-6 bg-white">
                 <div class="border-b p-4 font-extrabold text-4xl">
                     {{product.name}}
                 </div>
                 <div class="border-b p-4 text-2xl">
                     {{getPrice(product.price)}}
                 </div>
-                <div class="border-b p-4 text-xl text-green-300">
+                <div class="border-b p-4 text-xl" :class="product.quantity>0?'text-green-300':'text-red-500'">
                     {{product.quantity}} Unities
                 </div>
                 <div class="border-b p-4">
                     {{product.description}}
                 </div>
-                <form @submit.prevent="addToCart">
+                <form @submit.prevent="addToCart" v-if="$page.props.user">
                     <div class="border-b p-4 grid grid-cols-4 gap-2 w-7/12">
                         <input type="number" class="py-2 shadow-md col-span-1" v-model="qty">
                         <button type="submit"
